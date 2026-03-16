@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Address | MyStore</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f6f9, #e9eef5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: #111827;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 560px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+            padding: 28px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .address-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+
+        .address-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .address-box div {
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-light {
+            background: #fff;
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-light:hover {
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Delete Address</h1>
+        <div class="subtitle">
+            Are you sure you want to delete this saved address? This action cannot be undone.
+        </div>
+
+        <div class="address-box">
+            <strong>{{ address.full_name }}</strong>
+            <div>
+                {{ address.address_line_1 }}<br>
+                {% if address.address_line_2 %}
+                    {{ address.address_line_2 }}<br>
+                {% endif %}
+                {{ address.city }}, {{ address.state }} - {{ address.postal_code }}<br>
+                {{ address.country }}<br>
+                Phone: {{ address.phone }}
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="actions">
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{% url 'profile' %}" class="btn btn-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

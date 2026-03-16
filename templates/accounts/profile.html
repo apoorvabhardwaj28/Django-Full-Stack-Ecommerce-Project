@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | MyStore</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f6f9, #e9eef5);
+            color: #111827;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px 50px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .brand p {
+            margin: 8px 0 0;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: #fff;
+        }
+
+        .btn-dark:hover {
+            background: #1f2937;
+        }
+
+        .btn-light {
+            background: #fff;
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-light:hover {
+            background: #f9fafb;
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+            padding: 24px;
+        }
+
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 22px;
+        }
+
+        .profile-row {
+            margin-bottom: 14px;
+        }
+
+        .profile-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .profile-value {
+            font-size: 15px;
+            color: #111827;
+            word-break: break-word;
+        }
+
+        .verified-badge,
+        .not-verified-badge,
+        .default-badge {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .verified-badge {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .not-verified-badge {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .default-badge {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #111827;
+            box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0 18px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .address-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .address-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .address-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .address-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .address-phone {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .address-text {
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 10px 0 16px;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 10px 14px;
+            font-size: 13px;
+            border-radius: 9px;
+        }
+
+        .empty-box {
+            padding: 24px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 14px;
+            text-align: center;
+            color: #6b7280;
+            background: #f8fafc;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-container {
+                padding: 22px 14px 36px;
+            }
+
+            .brand h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="top-bar">
+            <div class="brand">
+                <h1>My Profile</h1>
+                <p>Manage your account details and saved delivery addresses</p>
+            </div>
+
+            <div class="top-actions">
+                <a href="/" class="btn btn-light">Back to Store</a>
+                <a href="{% url 'logout' %}" class="btn btn-dark">Logout</a>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="grid">
+            <div class="card">
+                <h2>Account Details</h2>
+
+                <div class="profile-row">
+                    <div class="profile-label">Email</div>
+                    <div class="profile-value">{{ request.user.email }}</div>
+                </div>
+
+                <div class="profile-row">
+                    <div class="profile-label">Username</div>
+                    <div class="profile-value">{{ request.user.username }}</div>
+                </div>
+
+                <div class="profile-row">
+                    <div class="profile-label">Phone</div>
+                    <div class="profile-value">
+                        {% if profile.phone %}
+                            {{ profile.phone }}
+                        {% else %}
+                            Not added yet
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="profile-row">
+                    <div class="profile-label">Joined On</div>
+                    <div class="profile-value">{{ request.user.date_joined|date:"d M Y, h:i A" }}</div>
+                </div>
+
+                <div class="profile-row">
+                    <div class="profile-label">Email Verification</div>
+                    <div class="profile-value">
+                        {% if profile.is_email_verified %}
+                            <span class="verified-badge">Verified</span>
+                        {% else %}
+                            <span class="not-verified-badge">Not Verified</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Add New Address</h2>
+
+                <form method="post" action="{% url 'add_address' %}">
+                    {% csrf_token %}
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="full_name">Full Name</label>
+                            <input type="text" name="full_name" id="full_name" placeholder="Enter full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" name="phone" id="phone" placeholder="Enter phone number" required>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="address_line_1">Address Line 1</label>
+                            <input type="text" name="address_line_1" id="address_line_1" placeholder="House no, building, street" required>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="address_line_2">Address Line 2</label>
+                            <input type="text" name="address_line_2" id="address_line_2" placeholder="Landmark, area (optional)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" name="city" id="city" placeholder="Enter city" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" name="state" id="state" placeholder="Enter state" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="postal_code">Postal Code</label>
+                            <input type="text" name="postal_code" id="postal_code" placeholder="Enter postal code" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" name="country" id="country" value="India" required>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-row">
+                        <input type="checkbox" name="is_default" id="is_default">
+                        <label for="is_default" style="margin: 0; font-weight: 500;">Set as default address</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark">Save Address</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h3>Saved Addresses</h3>
+        </div>
+
+        {% if addresses %}
+            <div class="address-list">
+                {% for address in addresses %}
+                    <div class="address-card">
+                        <div class="address-card-top">
+                            <div>
+                                <div class="address-name">{{ address.full_name }}</div>
+                                <div class="address-phone">{{ address.phone }}</div>
+                            </div>
+
+                            {% if address.is_default %}
+                                <span class="default-badge">Default</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="address-text">
+                            {{ address.address_line_1 }}<br>
+                            {% if address.address_line_2 %}
+                                {{ address.address_line_2 }}<br>
+                            {% endif %}
+                            {{ address.city }}, {{ address.state }} - {{ address.postal_code }}<br>
+                            {{ address.country }}
+                        </div>
+
+                        <div class="address-actions">
+                            <a href="{% url 'edit_address' address.id %}" class="btn btn-light btn-small">Edit</a>
+
+                            {% if not address.is_default %}
+                                <a href="{% url 'set_default_address' address.id %}" class="btn btn-light btn-small">Set Default</a>
+                            {% endif %}
+
+                            <a href="{% url 'delete_address' address.id %}" class="btn btn-light btn-small">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box">
+                No saved addresses yet. Add your first delivery address above.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

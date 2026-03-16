@@ -1,0 +1,497 @@
+{% extends 'base.html' %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<style>
+    .catalog-shell {
+        padding-top: 12px;
+    }
+
+    .catalog-sidebar-card,
+    .catalog-header-card,
+    .product-card-modern,
+    .quick-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 22px;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+    }
+
+    .catalog-sidebar-card,
+    .quick-card,
+    .catalog-header-card {
+        padding: 22px;
+    }
+
+    .sidebar-title {
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 12px;
+        letter-spacing: -0.2px;
+    }
+
+    .sidebar-subtitle {
+        color: #64748b;
+        font-size: 0.93rem;
+        margin-bottom: 18px;
+        line-height: 1.6;
+    }
+
+    .category-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .category-link-modern {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 15px;
+        border-radius: 15px;
+        color: #334155;
+        background: #f8fafc;
+        border: 1px solid transparent;
+        font-weight: 600;
+        transition: all 0.22s ease;
+    }
+
+    .category-link-modern:hover {
+        background: #eff6ff;
+        color: #0f172a;
+        border-color: #bfdbfe;
+        transform: translateX(2px);
+    }
+
+    .category-link-modern.active {
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        color: white;
+        box-shadow: 0 12px 28px rgba(37, 99, 235, 0.22);
+    }
+
+    .category-link-modern .arrow {
+        opacity: 0.8;
+    }
+
+    .quick-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-weight: 700;
+    }
+
+    .catalog-header-card {
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #ffffff, #f8fbff);
+    }
+
+    .catalog-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 0.84rem;
+        font-weight: 700;
+        margin-bottom: 14px;
+    }
+
+    .catalog-title {
+        font-size: 2.45rem;
+        font-weight: 800;
+        letter-spacing: -0.8px;
+        color: #0f172a;
+        margin-bottom: 8px;
+        line-height: 1.1;
+    }
+
+    .catalog-description {
+        color: #64748b;
+        margin-bottom: 0;
+        max-width: 680px;
+        line-height: 1.7;
+    }
+
+    .product-card-modern {
+        overflow: hidden;
+        height: 100%;
+        transition: transform 0.26s ease, box-shadow 0.26s ease;
+    }
+
+    .product-card-modern:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 44px rgba(15, 23, 42, 0.10);
+    }
+
+    .product-image-wrap {
+        position: relative;
+        background: linear-gradient(135deg, #f8fafc, #eef2f7);
+        padding: 12px;
+    }
+
+    .product-image-wrap a {
+        display: block;
+        cursor: pointer;
+    }
+
+    .product-img-modern {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.28s ease;
+    }
+
+    .product-card-modern:hover .product-img-modern {
+        transform: scale(1.02);
+    }
+
+    .product-img-placeholder {
+        height: 240px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        font-size: 2rem;
+    }
+
+    .product-body-modern {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .product-title-modern {
+        font-size: 1.14rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        line-height: 1.35;
+    }
+
+    .product-title-modern a {
+        color: #0f172a;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .product-title-modern a:hover {
+        color: #1d4ed8;
+    }
+
+    .product-desc-modern {
+        color: #64748b;
+        font-size: 0.95rem;
+        line-height: 1.68;
+        min-height: 74px;
+        margin-bottom: 14px;
+    }
+
+    .product-meta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+
+    .price-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: #f8fafc;
+        color: #0f172a;
+        font-weight: 800;
+        border: 1px solid #e2e8f0;
+    }
+
+    .stock-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .stock-chip.in-stock {
+        background: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+    }
+
+    .stock-chip.out-stock {
+        background: #fef2f2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+
+    .product-actions-modern {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: auto;
+    }
+
+    .product-actions-modern .btn {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+
+    .empty-state-modern {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 22px;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+        padding: 46px 24px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 74px;
+        height: 74px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 1.85rem;
+    }
+
+    .pagination .page-link {
+        border-radius: 12px !important;
+        margin: 0 4px;
+        border: 1px solid #e2e8f0;
+        color: #0f172a;
+        font-weight: 700;
+        box-shadow: none;
+        padding: 10px 14px;
+    }
+
+    .pagination .page-link:hover {
+        background: #f8fafc;
+    }
+
+    .pagination .page-item.active .page-link {
+        background: #111827;
+        border-color: #111827;
+        color: white;
+    }
+
+    @media (max-width: 991.98px) {
+        .catalog-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .catalog-title {
+            font-size: 1.7rem;
+        }
+
+        .product-img-modern,
+        .product-img-placeholder {
+            height: 220px;
+        }
+    }
+</style>
+
+<div class="catalog-shell">
+    <div class="row g-4">
+        <div class="col-lg-3">
+            <div class="catalog-sidebar-card mb-4">
+                <div class="sidebar-title">Browse Categories</div>
+                <div class="sidebar-subtitle">
+                    Explore products by category with a cleaner and more focused shopping experience.
+                </div>
+
+                <div class="category-links">
+                    <a href="{% url 'product_list' %}" class="category-link-modern {% if not category %}active{% endif %}">
+                        <span><i class="bi bi-grid me-2"></i>All Products</span>
+                        <span class="arrow"><i class="bi bi-chevron-right"></i></span>
+                    </a>
+
+                    {% for c in categories %}
+                        <a href="{% url 'products_by_category' c.slug %}" class="category-link-modern {% if category and category.slug == c.slug %}active{% endif %}">
+                            <span>{{ c.name }}</span>
+                            <span class="arrow"><i class="bi bi-chevron-right"></i></span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="quick-card">
+                    <div class="sidebar-title">Quick Access</div>
+                    <div class="sidebar-subtitle">
+                        Jump directly to your saved products and shopping cart.
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'wishlist' %}" class="btn btn-outline-danger quick-action-btn">
+                            <i class="bi bi-heart"></i>
+                            <span>View Wishlist</span>
+                        </a>
+
+                        <a href="{% url 'cart_detail' %}" class="btn btn-dark quick-action-btn">
+                            <i class="bi bi-cart3"></i>
+                            <span>Go to Cart</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-9">
+            <div class="catalog-header-card">
+                <span class="catalog-eyebrow">
+                    <i class="bi bi-stars"></i>
+                    Curated Shopping Experience
+                </span>
+
+                {% if query %}
+                    <h1 class="catalog-title">Search results for "{{ query }}"</h1>
+                    <p class="catalog-description">
+                        Explore matching products from your store catalog and discover the best fit for what you're looking for.
+                    </p>
+                {% elif category %}
+                    <h1 class="catalog-title">{{ category.name }}</h1>
+                    <p class="catalog-description">
+                        Browse premium picks from the {{ category.name|lower }} category with a cleaner and more elegant product experience.
+                    </p>
+                {% else %}
+                    <h1 class="catalog-title">All Products</h1>
+                    <p class="catalog-description">
+                        Explore the latest products in your store with a modern layout, elegant styling, and smooth navigation.
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="row g-4">
+                {% for product in page_obj %}
+                    <div class="col-md-6 col-xl-4">
+                        <div class="product-card-modern">
+                            <div class="product-image-wrap">
+                                <a href="{% url 'product_detail' product.slug %}" class="text-decoration-none">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" class="product-img-modern" alt="{{ product.name }}">
+                                    {% else %}
+                                        <div class="product-img-placeholder">
+                                            <i class="bi bi-image"></i>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+
+                            <div class="product-body-modern">
+                                <h5 class="product-title-modern">
+                                    <a href="{% url 'product_detail' product.slug %}">
+                                        {{ product.name }}
+                                    </a>
+                                </h5>
+
+                                <p class="product-desc-modern">{{ product.description|truncatewords:12 }}</p>
+
+                                <div class="product-meta-row">
+                                    <div class="price-chip">
+                                        <i class="bi bi-tag"></i>
+                                        <span>₹{{ product.price }}</span>
+                                    </div>
+
+                                    {% if product.available and product.stock > 0 %}
+                                        <span class="stock-chip in-stock">
+                                            <i class="bi bi-check-circle"></i> In Stock
+                                        </span>
+                                    {% else %}
+                                        <span class="stock-chip out-stock">
+                                            <i class="bi bi-x-circle"></i> Out of Stock
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="product-actions-modern">
+                                    <a href="{% url 'product_detail' product.slug %}" class="btn btn-dark btn-sm">
+                                        <i class="bi bi-eye me-1"></i> View Details
+                                    </a>
+
+                                    {% if user.is_authenticated %}
+                                        {% if product.id in wishlist_product_ids %}
+                                            <a href="{% url 'remove_from_wishlist' product.id %}" class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-heart-fill me-1"></i> Saved
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-heart me-1"></i> Wishlist
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'login' %}" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="empty-state-modern">
+                            <div class="empty-icon">
+                                <i class="bi bi-search"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">No products found</h4>
+                            <p class="text-muted mb-3">
+                                Try searching with a different keyword or browse another category.
+                            </p>
+                            <a href="{% url 'product_list' %}" class="btn btn-dark">Back to All Products</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-5">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                    <i class="bi bi-arrow-left me-1"></i> Previous
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                    Next <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

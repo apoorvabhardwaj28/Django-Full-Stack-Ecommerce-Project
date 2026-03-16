@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyStore | Modern Shopping Experience</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef6ff;
+            --bg-soft: #f5faff;
+            --surface: rgba(255, 255, 255, 0.84);
+            --surface-strong: rgba(255, 255, 255, 0.94);
+            --white: #ffffff;
+            --text: #1b2430;
+            --text-soft: #5f6f82;
+            --text-faint: #93a2b4;
+            --line: rgba(40, 70, 110, 0.08);
+            --line-strong: rgba(40, 70, 110, 0.14);
+            --primary: #1c2f45;
+            --primary-2: #26415f;
+            --accent: #68a7ff;
+            --accent-deep: #3d84e6;
+            --accent-soft: rgba(104, 167, 255, 0.12);
+            --accent-2: #cfe4ff;
+            --shadow-sm: 0 10px 30px rgba(32, 68, 112, 0.08);
+            --shadow-md: 0 20px 50px rgba(32, 68, 112, 0.10);
+            --shadow-lg: 0 30px 80px rgba(32, 68, 112, 0.14);
+            --radius-xl: 32px;
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 8% 18%, rgba(104, 167, 255, 0.12), transparent 24%),
+                radial-gradient(circle at 92% 10%, rgba(207, 228, 255, 0.28), transparent 25%),
+                radial-gradient(circle at 20% 88%, rgba(184, 215, 255, 0.16), transparent 22%),
+                linear-gradient(180deg, #f8fbff 0%, #f1f7ff 38%, #ebf4ff 100%);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar {
+            background: rgba(245, 250, 255, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(40, 70, 110, 0.08);
+            box-shadow: 0 10px 35px rgba(40, 70, 110, 0.05);
+        }
+
+        .navbar-brand {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--primary) !important;
+        }
+
+        .nav-link {
+            color: var(--text-soft) !important;
+            font-weight: 600;
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+            transition: color 0.25s ease, transform 0.25s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn {
+            border-radius: 999px;
+            font-weight: 700;
+            padding: 12px 22px;
+            transition: all 0.28s ease;
+            box-shadow: none;
+        }
+
+        .btn-dark {
+            background: linear-gradient(135deg, #1f3550 0%, #355b89 100%);
+            border: none;
+            box-shadow: 0 14px 30px rgba(32, 68, 112, 0.18);
+        }
+
+        .btn-dark:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(32, 68, 112, 0.24);
+        }
+
+        .btn-outline-dark {
+            color: var(--primary);
+            border: 1px solid rgba(40, 70, 110, 0.14);
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .btn-outline-dark:hover {
+            background: #fff;
+            color: var(--primary);
+            border-color: rgba(40, 70, 110, 0.22);
+            transform: translateY(-2px);
+        }
+
+        .btn-light {
+            background: #fff;
+            color: var(--primary);
+            border: none;
+            box-shadow: 0 14px 30px rgba(255, 255, 255, 0.18);
+        }
+
+        .btn-light:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-light {
+            border: 1px solid rgba(255,255,255,0.30);
+            background: transparent;
+            color: #fff;
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .section-space {
+            padding: 95px 0;
+        }
+
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-deep);
+            background: rgba(104, 167, 255, 0.10);
+            border: 1px solid rgba(104, 167, 255, 0.18);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin-bottom: 14px;
+        }
+
+        .section-subtitle {
+            color: var(--text-soft);
+            max-width: 760px;
+            margin: 0 auto 46px;
+            line-height: 1.8;
+            font-size: 1.03rem;
+        }
+
+        .hero {
+            position: relative;
+            padding: 110px 0 90px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -120px;
+            right: -100px;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(104, 167, 255, 0.20), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            left: -100px;
+            bottom: -100px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(207, 228, 255, 0.30), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 999px;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.86);
+            border: 1px solid rgba(40, 70, 110, 0.08);
+            color: var(--accent-deep);
+            box-shadow: var(--shadow-sm);
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .hero-title {
+            font-size: 4.2rem;
+            line-height: 0.98;
+            letter-spacing: -0.055em;
+            font-weight: 900;
+            margin-bottom: 20px;
+            max-width: 700px;
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, #1f3550 0%, #3d84e6 55%, #7db7ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-text {
+            color: var(--text-soft);
+            font-size: 1.08rem;
+            line-height: 1.9;
+            max-width: 620px;
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 15px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(40, 70, 110, 0.08);
+            box-shadow: var(--shadow-sm);
+            color: var(--text);
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .hero-note {
+            margin-top: 18px;
+            color: var(--text-soft);
+            font-size: 0.96rem;
+        }
+
+        .hero-shell {
+            position: relative;
+            background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
+            border: 1px solid rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 34px;
+            padding: 22px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .hero-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.26), transparent 36%);
+            pointer-events: none;
+        }
+
+        .dashboard-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(40, 70, 110, 0.06);
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mini-brand {
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .mini-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .mini-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(40, 70, 110, 0.14);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 0.95fr;
+            gap: 16px;
+        }
+
+        .hero-panel,
+        .hero-side-card {
+            background: rgba(255,255,255,0.94);
+            border: 1px solid rgba(40, 70, 110, 0.08);
+            border-radius: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-panel {
+            padding: 18px;
+        }
+
+        .hero-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .hero-panel-header h5 {
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .hero-panel-header span {
+            color: var(--text-soft);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .product-showcase {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .product-tile {
+            padding: 14px;
+            border-radius: 20px;
+            background: linear-gradient(180deg, #ffffff, #f5faff);
+            border: 1px solid rgba(40, 70, 110, 0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 28px rgba(32, 68, 112, 0.10);
+        }
+
+        .product-visual {
+            height: 120px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(40, 70, 110, 0.06);
+            position: relative;
+            overflow: hidden;
+            background: #eef5ff;
+        }
+
+        .product-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-name {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .product-price {
+            color: var(--text-soft);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .hero-side-stack {
+            display: grid;
+            gap: 16px;
+        }
+
+        .hero-side-card {
+            padding: 18px;
+            animation: floaty 4s ease-in-out infinite;
+        }
+
+        .hero-side-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .hero-side-card:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .eyebrow {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--accent-deep);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .hero-side-card h6 {
+            font-size: 1.02rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero-side-card p {
+            color: var(--text-soft);
+            line-height: 1.7;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .glance-bar {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .glance-item {
+            background: rgba(255,255,255,0.88);
+            border: 1px solid rgba(40,70,110,0.08);
+            border-radius: 18px;
+            padding: 16px 14px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .glance-item strong {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 4px;
+        }
+
+        .glance-item span {
+            color: var(--text-soft);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .glass-band {
+            background: rgba(255,255,255,0.78);
+            border: 1px solid rgba(40,70,110,0.07);
+            border-radius: 28px;
+            padding: 24px 22px;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .trust-item {
+            text-align: center;
+            padding: 8px 10px;
+        }
+
+        .trust-item strong {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .trust-item span {
+            color: var(--text-soft);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .feature-card,
+        .preview-card,
+        .step-card,
+        .testimonial-card,
+        .faq-card {
+            height: 100%;
+            background: rgba(255,255,255,0.90);
+            border: 1px solid rgba(40, 70, 110, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+
+        .feature-card:hover,
+        .preview-card:hover,
+        .step-card:hover,
+        .testimonial-card:hover,
+        .faq-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 55px rgba(32, 68, 112, 0.12);
+            border-color: rgba(104, 167, 255, 0.18);
+        }
+
+        .icon-box {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+            background: linear-gradient(180deg, rgba(104, 167, 255, 0.12), rgba(207, 228, 255, 0.18));
+            border: 1px solid rgba(104, 167, 255, 0.14);
+            margin-bottom: 18px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+        }
+
+        .feature-card h5,
+        .preview-card h5,
+        .step-card h5,
+        .testimonial-card h5,
+        .faq-card h5 {
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-card p,
+        .preview-card p,
+        .step-card p,
+        .testimonial-card p,
+        .faq-card p {
+            color: var(--text-soft);
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .preview-image {
+            height: 220px;
+            border-radius: 22px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(40, 70, 110, 0.07);
+            background: #eef5ff;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .stats-wrap {
+            position: relative;
+            overflow: hidden;
+            border-radius: 34px;
+            padding: 42px 28px;
+            background:
+                radial-gradient(circle at top right, rgba(125, 183, 255, 0.20), transparent 28%),
+                radial-gradient(circle at bottom left, rgba(207, 228, 255, 0.18), transparent 24%),
+                linear-gradient(135deg, #20334a 0%, #355b89 60%, #4f81b9 100%);
+            color: #fff;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats-wrap::before {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            right: -80px;
+            top: -80px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .text-white-soft {
+            color: rgba(255,255,255,0.76);
+        }
+
+        .step-no {
+            display: inline-flex;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            background: rgba(104, 167, 255, 0.10);
+            color: var(--accent-deep);
+            font-weight: 800;
+            margin-bottom: 14px;
+            border: 1px solid rgba(104, 167, 255, 0.14);
+        }
+
+        .step-line {
+            width: 100%;
+            height: 4px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(61, 132, 230, 0.95), rgba(207, 228, 255, 0.45));
+            margin-top: 20px;
+        }
+
+        .testimonial-card .quote {
+            color: var(--text-soft);
+            line-height: 1.85;
+            margin-bottom: 18px;
+            font-size: 0.98rem;
+        }
+
+        .testimonial-user {
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .testimonial-role {
+            color: var(--text-soft);
+            font-size: 0.92rem;
+        }
+
+        .faq-card {
+            padding: 24px;
+        }
+
+        .cta-box {
+            position: relative;
+            overflow: hidden;
+            border-radius: 34px;
+            padding: 60px 30px;
+            background:
+                radial-gradient(circle at top right, rgba(125, 183, 255, 0.24), transparent 28%),
+                radial-gradient(circle at bottom left, rgba(207, 228, 255, 0.14), transparent 24%),
+                linear-gradient(135deg, #20334a 0%, #355b89 55%, #4f81b9 100%);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cta-box::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -90px;
+            top: -90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .cta-box h2 {
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box p {
+            color: rgba(255,255,255,0.82);
+            max-width: 720px;
+            margin: 0 auto 28px;
+            line-height: 1.85;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer {
+            padding: 34px 0 42px;
+            color: var(--text-soft);
+        }
+
+        .footer strong {
+            color: var(--text);
+        }
+
+        .footer-line {
+            height: 1px;
+            background: rgba(40,70,110,0.08);
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1199px) {
+            .hero-title {
+                font-size: 3.6rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero {
+                padding: 86px 0 70px;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-space {
+                padding: 75px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.3rem;
+            }
+
+            .section-title {
+                font-size: 1.9rem;
+            }
+
+            .hero-actions,
+            .hero-meta {
+                flex-direction: column;
+            }
+
+            .hero-actions .btn,
+            .hero-meta-pill {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .product-showcase,
+            .glance-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card,
+            .preview-card,
+            .step-card,
+            .testimonial-card,
+            .faq-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container py-2">
+        <a class="navbar-brand" href="{% url 'landing_page' %}">MyStore</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav" aria-controls="landingNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="landingNav">
+            <ul class="navbar-nav ms-auto me-3">
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#preview">Preview</a></li>
+                <li class="nav-item"><a class="nav-link" href="#how">How it Works</a></li>
+                <li class="nav-item"><a class="nav-link" href="#testimonials">Reviews</a></li>
+                <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+            </ul>
+
+            <div class="d-flex gap-2">
+                <a href="{% url 'login' %}" class="btn btn-outline-dark">Login</a>
+                <a href="{% url 'signup' %}" class="btn btn-dark">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="hero-badge">● Soft design. Smooth flow. Better shopping confidence.</span>
+
+                <h1 class="hero-title">
+                    A <span class="highlight">modern store experience</span> that feels elegant from first click to final checkout.
+                </h1>
+
+                <p class="hero-text">
+                    MyStore combines product discovery, wishlist saving, cart management, coupon support,
+                    secure checkout, and order tracking into one polished ecommerce journey that feels fast,
+                    intuitive, and beautifully organized.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{% url 'signup' %}" class="btn btn-dark">Create Account</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-dark">Login to Explore</a>
+                </div>
+
+                <div class="hero-meta">
+                    <span class="hero-meta-pill">Secure user access</span>
+                    <span class="hero-meta-pill">Wishlist, cart, and coupons</span>
+                    <span class="hero-meta-pill">Order tracking and invoices</span>
+                </div>
+
+                <div class="hero-note">
+                    Products, cart, wishlist, and checkout become available after login.
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-shell">
+                    <div class="dashboard-topbar">
+                        <div class="mini-brand">MyStore Experience</div>
+                        <div class="mini-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="hero-grid">
+                        <div class="hero-panel">
+                            <div class="hero-panel-header">
+                                <h5>Featured Collection</h5>
+                                <span>Fresh, simple, reliable</span>
+                            </div>
+
+                            <div class="product-showcase">
+                                <div class="product-tile">
+                                    <div class="product-visual">
+                                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Watch product">
+                                    </div>
+                                    <div class="product-name">Minimal Essentials</div>
+                                    <p class="product-price">Clean catalog browsing</p>
+                                </div>
+
+                                <div class="product-tile">
+                                    <div class="product-visual">
+                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Shoes product">
+                                    </div>
+                                    <div class="product-name">Smart Picks</div>
+                                    <p class="product-price">Organized product discovery</p>
+                                </div>
+
+                                <div class="product-tile">
+                                    <div class="product-visual">
+                                        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80" alt="Fashion product">
+                                    </div>
+                                    <div class="product-name">Wishlist Ready</div>
+                                    <p class="product-price">Save what matters</p>
+                                </div>
+
+                                <div class="product-tile">
+                                    <div class="product-visual">
+                                        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="Shopping product">
+                                    </div>
+                                    <div class="product-name">Fast Checkout</div>
+                                    <p class="product-price">Smooth purchase flow</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-side-stack">
+                            <div class="hero-side-card">
+                                <div class="eyebrow">Browse</div>
+                                <h6>Seamless product exploration</h6>
+                                <p>Discover products through a clean catalog layout with categories, pricing, and product detail clarity.</p>
+                            </div>
+
+                            <div class="hero-side-card">
+                                <div class="eyebrow">Checkout</div>
+                                <h6>Cart and coupon flow that feels easy</h6>
+                                <p>Manage stock-aware cart actions, apply coupons, and continue into a secure checkout journey with payment support.</p>
+                            </div>
+
+                            <div class="hero-side-card">
+                                <div class="eyebrow">Orders</div>
+                                <h6>Post-purchase management made simple</h6>
+                                <p>Track order progress, cancel eligible orders, and access invoice support in a clear and organized flow.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glance-bar">
+                        <div class="glance-item">
+                            <strong>Clean</strong>
+                            <span>Interface design</span>
+                        </div>
+                        <div class="glance-item">
+                            <strong>Secure</strong>
+                            <span>Checkout journey</span>
+                        </div>
+                        <div class="glance-item">
+                            <strong>Simple</strong>
+                            <span>Order handling</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-space pt-0">
+    <div class="container">
+        <div class="glass-band">
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <strong>Refined UI</strong>
+                        <span>Elegant shopping flow</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <strong>Secure Access</strong>
+                        <span>Protected customer actions</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <strong>Wishlist & Cart</strong>
+                        <span>Save and manage items</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <strong>Order Support</strong>
+                        <span>Tracking and invoices</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="section-space">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-kicker">Why MyStore</span>
+            <h2 class="section-title">Everything feels connected, clear, and easy to use</h2>
+            <p class="section-subtitle">
+                The landing experience now looks more polished and modern while still supporting the same
+                authentication-based ecommerce flow you already built in Django.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <div class="icon-box">01</div>
+                    <h5>Elegant entry experience</h5>
+                    <p>A stronger first impression with better spacing, cleaner typography, soft blue tones, and a more premium visual structure.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <div class="icon-box">02</div>
+                    <h5>Focused user journey</h5>
+                    <p>Clear call-to-action buttons guide visitors toward signup or login without cluttering the page or distracting from your core flow.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <div class="icon-box">03</div>
+                    <h5>Modern layered styling</h5>
+                    <p>Soft translucent panels, gentle depth, and subtle shadows create a high-end look while keeping everything readable and decent.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <div class="icon-box">04</div>
+                    <h5>Consistent section flow</h5>
+                    <p>Your navbar links point to proper matching sections so the page feels complete and polished instead of visually unfinished.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <div class="icon-box">05</div>
+                    <h5>Responsive and clean</h5>
+                    <p>The layout adapts much better across desktop, tablet, and mobile screens without changing any login or signup logic underneath.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <div class="icon-box">06</div>
+                    <h5>Decent, not flashy</h5>
+                    <p>The look stays professional and modern, using soft gradients and motion instead of loud colors or overdone effects.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="preview" class="section-space pt-0">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-kicker">Store Preview</span>
+            <h2 class="section-title">A landing page that visually hints at your full ecommerce system</h2>
+            <p class="section-subtitle">
+                These panels now look intentional and complete, without changing any of your backend views,
+                authentication rules, or store logic.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80" alt="Shopping collection preview">
+                    </div>
+                    <h5>Product discovery</h5>
+                    <p>Show visitors that your store supports browsing products in a layout that feels clean, curated, and simple to navigate.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80" alt="Cart and wishlist preview">
+                    </div>
+                    <h5>Wishlist and cart flow</h5>
+                    <p>The structure visually communicates saving items, reviewing choices, and moving toward checkout with confidence.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80" alt="Checkout and order preview">
+                    </div>
+                    <h5>Checkout and orders</h5>
+                    <p>Users instantly understand that payments, order tracking, and invoices are part of a complete post-login shopping experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-space pt-0">
+    <div class="container">
+        <div class="stats-wrap">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-4">
+                    <h3 class="fw-bold mb-3">Designed to feel reliable at every step</h3>
+                    <p class="text-white-soft mb-0">
+                        A better landing page does not need to be flashy. It needs to feel trustworthy, modern,
+                        readable, and conversion-focused.
+                    </p>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <div class="stat-number">01</div>
+                    <div class="text-white-soft">Login and signup clarity</div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <div class="stat-number">02</div>
+                    <div class="text-white-soft">Smooth product journey</div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <div class="stat-number">03</div>
+                    <div class="text-white-soft">Secure checkout feel</div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <div class="stat-number">04</div>
+                    <div class="text-white-soft">Clear order handling</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how" class="section-space">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-kicker">How It Works</span>
+            <h2 class="section-title">A simple journey from visitor to buyer</h2>
+            <p class="section-subtitle">
+                This explains the user path clearly on the landing page while keeping your actual existing
+                Django ecommerce workflow exactly as it is.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-no">1</div>
+                    <h5>Create an account or log in</h5>
+                    <p>Visitors enter the store through your existing authentication routes using the same Django URLs and logic already in place.</p>
+                    <div class="step-line"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-no">2</div>
+                    <h5>Browse, save, and purchase</h5>
+                    <p>Once inside, users can explore products, build a wishlist, manage the cart, apply coupons, and continue to checkout.</p>
+                    <div class="step-line"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-no">3</div>
+                    <h5>Track and manage orders</h5>
+                    <p>After purchasing, customers can review orders, access invoice support, and manage eligible order actions with clarity.</p>
+                    <div class="step-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="testimonials" class="section-space pt-0">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-kicker">Reviews</span>
+            <h2 class="section-title">A design style that builds trust quickly</h2>
+            <p class="section-subtitle">
+                These testimonial blocks help your landing page feel complete and professional while keeping the design soft and clean.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="quote">
+                        “The layout feels clean and premium. It makes the store look more trustworthy and much more complete from the first screen.”
+                    </p>
+                    <div class="testimonial-user">A happy shopper</div>
+                    <div class="testimonial-role">Smooth first impression</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="quote">
+                        “I liked how everything felt organized. The sign-up and login actions are clear, and the page gives a strong sense of a real shopping platform.”
+                    </p>
+                    <div class="testimonial-user">Returning customer</div>
+                    <div class="testimonial-role">Better user confidence</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="quote">
+                        “It looks modern without being overdone. The styling is elegant, and the overall page feels much more polished and intentional.”
+                    </p>
+                    <div class="testimonial-user">New visitor</div>
+                    <div class="testimonial-role">Professional design feel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="section-space pt-0">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-kicker">FAQ</span>
+            <h2 class="section-title">Common questions answered clearly</h2>
+            <p class="section-subtitle">
+                These help explain your store experience on the landing page and make the page feel more complete and useful.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="faq-card">
+                    <h5>Does this change my Django logic?</h5>
+                    <p>No. This is a visual redesign only. Your URL tags, authentication entry points, and overall store logic remain unchanged.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="faq-card">
+                    <h5>Can users browse products directly from the landing page?</h5>
+                    <p>Your current message is preserved: products, cart, wishlist, and checkout become available after login.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="faq-card">
+                    <h5>Is the page mobile friendly?</h5>
+                    <p>Yes. The redesigned layout includes better responsiveness for smaller screens while keeping the page visually balanced.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="faq-card">
+                    <h5>Is the design too flashy?</h5>
+                    <p>No. The styling is modern and distinctive, but still decent, readable, and suitable for a professional ecommerce platform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-space pt-0">
+    <div class="container">
+        <div class="cta-box text-center">
+            <h2>Ready to explore MyStore?</h2>
+            <p>
+                Create your account or log in to enter a cleaner, more modern shopping experience with products,
+                wishlist support, cart actions, secure checkout, and organized order management.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap position-relative" style="z-index:1;">
+                <a href="{% url 'signup' %}" class="btn btn-light btn-lg">Sign Up</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">Login</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer text-center">
+    <div class="container">
+        <div class="footer-line"></div>
+        <p class="mb-1">Built for a smoother, cleaner, and more refined ecommerce experience.</p>
+        <p class="mb-0">Developed by <strong>Apoorva Bhardwaj</strong></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

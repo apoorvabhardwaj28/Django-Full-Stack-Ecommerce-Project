@@ -1,0 +1,472 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Analytics Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <style>
+        .dashboard-shell {
+            background: linear-gradient(135deg, #f8f9fa 0%, #eef2f7 100%);
+            border-radius: 24px;
+            padding: 24px;
+        }
+
+        .dashboard-card {
+            border: none;
+            border-radius: 22px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+            background: #ffffff;
+            height: 100%;
+        }
+
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.92rem;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .metric-subtext {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .quick-btn {
+            border-radius: 14px;
+            padding: 10px 14px;
+        }
+
+        .table thead th {
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+        .soft-badge {
+            border-radius: 999px;
+            padding: 0.45rem 0.8rem;
+        }
+
+        .chart-card canvas {
+            max-height: 320px;
+        }
+    </style>
+
+    <div class="dashboard-shell">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h2 class="fw-bold mb-1">Admin Analytics Dashboard</h2>
+                <p class="text-muted mb-0">A professional overview of revenue, customers, products, and sales performance.</p>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{% url 'admin:index' %}" class="btn btn-dark quick-btn">Django Admin</a>
+                <a href="{% url 'export_csv' %}" class="btn btn-success quick-btn">Export CSV</a>
+            </div>
+        </div>
+
+        <!-- Filter buttons -->
+        <div class="d-flex gap-2 mb-4 flex-wrap">
+            <a href="?range=today" class="btn {% if range == 'today' %}btn-dark{% else %}btn-outline-dark{% endif %} btn-sm">Today</a>
+            <a href="?range=7" class="btn {% if range == '7' %}btn-dark{% else %}btn-outline-dark{% endif %} btn-sm">7 Days</a>
+            <a href="?range=30" class="btn {% if range == '30' %}btn-dark{% else %}btn-outline-dark{% endif %} btn-sm">30 Days</a>
+        </div>
+
+        <!-- Revenue summary cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Total Revenue</div>
+                        <h3 class="metric-value">₹{{ total_revenue }}</h3>
+                        <div class="metric-subtext">All paid orders combined</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Today's Revenue</div>
+                        <h3 class="metric-value">₹{{ today_revenue }}</h3>
+                        <div class="metric-subtext">Revenue generated today</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Weekly Revenue</div>
+                        <h3 class="metric-value">₹{{ week_revenue }}</h3>
+                        <div class="metric-subtext">Last 7 days</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Monthly Revenue</div>
+                        <h3 class="metric-value">₹{{ month_revenue }}</h3>
+                        <div class="metric-subtext">Current month performance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main KPI cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Total Orders</div>
+                        <h4 class="metric-value">{{ total_orders }}</h4>
+                        <div class="metric-subtext">All orders placed</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Paid Orders</div>
+                        <h4 class="metric-value">{{ paid_orders }}</h4>
+                        <div class="metric-subtext">Successfully paid orders</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Pending Orders</div>
+                        <h4 class="metric-value">{{ pending_orders }}</h4>
+                        <div class="metric-subtext">Orders needing attention</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Total Users</div>
+                        <h4 class="metric-value">{{ total_users }}</h4>
+                        <div class="metric-subtext">Registered customers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Secondary KPI cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Total Products</div>
+                        <h4 class="metric-value">{{ total_products }}</h4>
+                        <div class="metric-subtext">Products in catalog</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Total Reviews</div>
+                        <h4 class="metric-value">{{ total_reviews }}</h4>
+                        <div class="metric-subtext">Customer review count</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Wishlist Items</div>
+                        <h4 class="metric-value">{{ total_wishlist_items }}</h4>
+                        <div class="metric-subtext">Products saved by users</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="metric-label">Quick Actions</div>
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            <a href="{% url 'admin:products_product_changelist' %}" class="btn btn-outline-secondary btn-sm">Products</a>
+                            <a href="{% url 'admin:order_order_changelist' %}" class="btn btn-outline-secondary btn-sm">Orders</a>
+                            <a href="{% url 'admin:auth_user_changelist' %}" class="btn btn-outline-secondary btn-sm">Users</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts row 1 -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="card dashboard-card chart-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Revenue Trend</h5>
+                        <canvas id="revenueChart" height="95"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card dashboard-card chart-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Orders by Status</h5>
+                        <canvas id="statusChart" height="220"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts row 2 -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+                <div class="card dashboard-card chart-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Orders Trend</h5>
+                        <canvas id="ordersChart" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tables row -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Top Selling Products</h5>
+
+                        {% if top_products %}
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Units Sold</th>
+                                            <th>Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in top_products %}
+                                            <tr>
+                                                <td>{{ item.product__name }}</td>
+                                                <td>{{ item.total_quantity }}</td>
+                                                <td>₹{{ item.total_revenue|default:"0.00" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">No sales data available yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Top Customers</h5>
+
+                        {% if top_customers %}
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Orders</th>
+                                            <th>Total Spent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for customer in top_customers %}
+                                            <tr>
+                                                <td>{{ customer.user__username }}</td>
+                                                <td>{{ customer.order_count }}</td>
+                                                <td>₹{{ customer.total_spent|default:"0.00" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">No customer sales data available yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts + Recent Orders -->
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Low Stock Alerts</h5>
+
+                        {% if low_stock_products %}
+                            <div class="list-group list-group-flush">
+                                {% for product in low_stock_products %}
+                                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <div>
+                                            <div class="fw-semibold">{{ product.name }}</div>
+                                        </div>
+                                        <span class="badge bg-danger soft-badge">{{ product.stock }} left</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">Great — no low stock products right now.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="section-title">Recent Orders</h5>
+
+                        {% if recent_orders %}
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Order</th>
+                                            <th>User</th>
+                                            <th>Status</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in recent_orders %}
+                                            <tr>
+                                                <td>#{{ order.id }}</td>
+                                                <td>{{ order.user.username }}</td>
+                                                <td>
+                                                    <span class="badge
+                                                        {% if order.status == 'delivered' %}bg-success
+                                                        {% elif order.status == 'shipped' %}bg-primary
+                                                        {% elif order.status == 'processing' %}bg-warning text-dark
+                                                        {% else %}bg-secondary
+                                                        {% endif %}">
+                                                        {{ order.status|title }}
+                                                    </span>
+                                                </td>
+                                                <td>₹{{ order.total_price }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">No recent orders found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const revenueLabels = JSON.parse('{{ revenue_labels_json|escapejs }}');
+    const revenueValues = JSON.parse('{{ revenue_values_json|escapejs }}');
+
+    const ordersLabels = JSON.parse('{{ orders_labels_json|escapejs }}');
+    const ordersValues = JSON.parse('{{ orders_values_json|escapejs }}');
+
+    const statusLabels = JSON.parse('{{ status_labels_json|escapejs }}');
+    const statusValues = JSON.parse('{{ status_values_json|escapejs }}');
+
+    new Chart(document.getElementById('revenueChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: revenueLabels,
+            datasets: [{
+                label: 'Revenue',
+                data: revenueValues,
+                borderWidth: 3,
+                tension: 0.35,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('ordersChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ordersLabels,
+            datasets: [{
+                label: 'Orders',
+                data: ordersValues,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('statusChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusValues,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+{% endblock %}
