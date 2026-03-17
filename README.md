@@ -3,6 +3,14 @@
 A full-stack e-commerce web application built using Django. It includes user authentication, product management, cart functionality, and online payment integration. The project is deployed and accessible online.
 
 ---
+![Django](https://img.shields.io/badge/Django-5.2-green?style=for-the-badge&logo=django)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=for-the-badge&logo=postgresql)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-Frontend-purple?style=for-the-badge&logo=bootstrap)
+![Render](https://img.shields.io/badge/Deployed%20on-Render-black?style=for-the-badge&logo=render)
+![Python](https://img.shields.io/badge/Python-3.11-yellow?style=for-the-badge&logo=python)
+![Status](https://img.shields.io/badge/Project-Live-success?style=for-the-badge)
+
+----
 
 ## 🔗 Live Demo
 👉 https://django-full-stack-ecommerce-project.onrender.com
