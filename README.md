@@ -72,8 +72,6 @@ A full-stack e-commerce web application built using **Django**, featuring authen
 
 ## 📸 Screenshots
 
-> Add your screenshots inside a folder named `screenshots` in the root of your repository, then keep the paths as below.
-
 ### Landing Page
 ![Landing Page](screenshots/landing-page.png)
 
@@ -84,10 +82,7 @@ A full-stack e-commerce web application built using **Django**, featuring authen
 ![Signup Page](screenshots/signup-page.png)
 
 ### Product Listing Page
-![Product Listing](screenshots/product-list.png)
-
-### Product Detail Page
-![Product Detail](screenshots/product-detail.png)
+![Product Listing Page](screenshots/product-list.png)
 
 ### Cart Page
 ![Cart Page](screenshots/cart-page.png)
@@ -95,12 +90,17 @@ A full-stack e-commerce web application built using **Django**, featuring authen
 ### Wishlist Page
 ![Wishlist Page](screenshots/wishlist-page.png)
 
-### Checkout / Payment Page
+### Checkout Page
 ![Checkout Page](screenshots/checkout-page.png)
 
-### Order History Page
-![Order History](screenshots/order-history.png)
+### Payment Completed Page
+![Payment Completed Page](screenshots/payment-completed-page.png)
 
+### Order History Page
+![Order History Page](screenshots/order-history.png)
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
 ---
 
 ## ⚙️ Installation Guide
